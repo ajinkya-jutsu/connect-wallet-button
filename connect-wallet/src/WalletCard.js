@@ -25,7 +25,7 @@ const WalletCard = () =>
     const accountChangedHandler = (newAccount) =>
     {
         setDefaultAccount(newAccount);
-        getUserBalance(newAccount);
+        getUserBalance(newAccount.toString());
     }
     const getUserBalance = (address) =>
     {
@@ -34,10 +34,19 @@ const WalletCard = () =>
             setUserBalance(ethers.utils.formatEther(balance));
         })
     }
+
+    const chainChangedHandler = () => {
+        window.location.reload();
+    }
+
+    window.ethereum.on('accountsChanged', accountChangedHandler);
+    
+    window.ethereum.on('chainChanged', chainChangedHandler);
+
     return(
         <div className='walletCard'>
             <h4>{"Connect to MetaMask using window.ethereum methods"}</h4>
-            <button onClick={connectWalletHandler}>{connButtonText}</button>
+            <button onClick={connectWalletHandler} className='btnConn'>{connButtonText}</button>
             <div className='accountDisplay'>
                 <h3>Address: {defaultAccount}</h3>
             </div>
